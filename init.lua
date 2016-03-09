@@ -622,10 +622,10 @@ beverage.support("milk", {
 
 beverage.support("flower", {
 	"farming:wheat",
-	"flowers:flower_rose",
-	"flowers:flower_dandelion_white",
-	"flowers:flower_viola",
-	"flowers:flower_tulip",
+	"flowers:rose",
+	"flowers:dandelion_white",
+	"flowers:viola",
+	"flowers:tulip",
 	"plants:aloe_wild",
 	"plants:lavender_wild",
 	"plants:grass_wild",
