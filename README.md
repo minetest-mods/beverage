@@ -40,6 +40,12 @@ You can add your own drinks by using the following template:
 
 Changelog
 
+    1.6
+	Deleted unnecessary codes (kadeh etc)
+	More coins added
+	Deleted empty cup and glasses because of no use for now
+	
+
     1.5 -
     Vending machine is rotateable
     Code tidy
