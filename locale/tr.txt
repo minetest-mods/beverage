@@ -4,14 +4,16 @@
 
 Coffee = Kahve
 Milk = Süt
-Hot Chocolate = Sýcak Çikolata
+Hot Chocolate = Sıcak Çikolata
 Tea = Çay
-Green Tea = Yeþil Çay
+Green Tea = Yeşil Çay
 Cup = Fincan
 Glasses = Bardak
 Orange Juice = Portakal Suyu
 Apple Juice = Elma Suyu
-Berry Juice = Böðürtlen Suyu
+Berry Juice = Böğürtlen Suyu
 Lemonade = Limonata
 Coconut Milk = Hindistan Cevizi Sütü
+Vending Machine = İçecek Otomatı
 Please insert a coin in the machine. = Lütfen önce makinaya para yerleştirin.
+ Tin = Kutusu

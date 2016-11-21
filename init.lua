@@ -5,17 +5,18 @@
 ------------------------------------------------
 
 -- Sounds CC0 Creative Commons
--- Code  WTFPL
+-- Beverage_boiling sound from bigsoundbank.com
+-- Code  MIT
 
 
 	  
 	
 beverage = 	{
-	version = 1.6,
-			}	
-			
-			
-			
+version = 1.7,
+	          }
+				
+
+				
 -- Inllib support for localization
 
 local S
@@ -92,7 +93,7 @@ function register_beverage(def)
 		
 end end
 
--- Tiles for drinks, glasses, cup
+-- Tiles for glasses, cup
 
 local tiles
 
@@ -122,7 +123,9 @@ local inventory_image
 	if def.wherein == "cup" then  
 	inventory_image = "cupinv.png^(invin.png^[colorize:"..liquidcolour..")"
   
-	else if def.wherein == "glasses" then 
+	else 
+	
+	if def.wherein == "glasses" then 
 	inventory_image = "glassesinv.png^(invin.png^[colorize:"..liquidcolour..")"
   
 end end
@@ -141,7 +144,7 @@ end end
 		inventory_image = inventory_image,
 		groups = {dig_immediate=3,attached_node=1},
 		sounds = default.node_sound_glass_defaults(),
-        stack_max = 6,
+        stack_max = 20,
 		on_use =  function(itemstack, user, pointed_thing)
 		if def.heat == "hot" then
 						   minetest.sound_play("beverage_hot", {
@@ -173,32 +176,21 @@ end end
 		
 	})
 	
-	-- Crafting
-	
-	minetest.register_craft({
-	output = 'beverage:'..name,
-	recipe = {
-		{'', recipe, ''},
-		{'vessels:glass_fragments', recipe2, 'vessels:glass_fragments'},
-		{'vessels:glass_fragments', 'vessels:glass_fragments', 'vessels:glass_fragments'},
-			 }
-	})
 
-
--- Make tin versions of beverages. Can be used for vending machine
+-- Make tin versions of cold beverages. You can get them from vending machine
 
 if def.heat == "cold" then 
 
   	minetest.register_node("beverage:"..name.."_tin", {
-		description = description.." Tin",
+		description = description..S(" Tin"),
 		drawtype = "nodebox",
 		use_texture_alpha = true,
 		paramtype = "light",
-    inventory_image = tininv,
+		inventory_image = tininv,
 		is_ground_content = false,
 		walkable = false,
 		groups = {dig_immediate=3,attached_node=1},
-    stack_max = 6,
+		stack_max = 20,
 		on_use =  function(itemstack, user, pointed_thing)
 				minetest.sound_play("beverage_cold", {
 				pos = pos, gain = 0.7, hear_distance = 5})
@@ -229,6 +221,19 @@ if def.heat == "cold" then
 		
 	})
 
+	
+	
+-- Crafting for cold beverages ( You can cook hot beverages with Kettle )
+	
+	minetest.register_craft({
+	output = 'beverage:'..name,
+	recipe = {
+		{'', recipe, ''},
+		{'', recipe2, ''},
+		{'', 'vessels:drinking_glass', ''},
+			 }
+	})
+	
 end
  
 	-- Steam animation for hot drinks
@@ -261,26 +266,45 @@ minetest.register_abm({
 			texture = "farming_steam.png"
 			})
 		end
-	end
-})
+	end  
+  
+
+})     
+
+
+  --- Crafting for hot beverages
+  
+  minetest.register_craft({
+	output = 'beverage:'..name,
+	recipe = {
+	{'vessels:glass_fragments', recipe, 'vessels:glass_fragments'},
+	{'vessels:glass_fragments', recipe2, 'vessels:glass_fragments'},
+	{'', 'default:torch', ''},
+			 }
+	                        })
+	
 
 end end
-
-
   
+  ----------------------------
+  ----------------------------
+  ----------------------------
   ----------- Vending Machine
+  ---------------------------
+  ----------------------------
+  ----------------------------
 
 
 local beveragetin =  {"beverage:applejuice_tin",
                       "beverage:orangejuice_tin", 
                       "beverage:berryjuice_tin", 
                       "beverage:lemonade_tin"
-                     }
+								}
 
 minetest.register_node("beverage:vending", {
-	description = S("Vending Machine"),
+  description = S("Vending Machine"),
   drawtype = "mesh",
-	mesh = "homedecor_soda_machine.obj",
+  mesh = "homedecor_soda_machine.obj",
   inventory_image = "beverage_vendinginv.png",
   paramtype = "light",
   paramtype2 = "facedir",
@@ -290,11 +314,6 @@ minetest.register_node("beverage:vending", {
 		 type = "fixed",
      fixed = {-0.5, -0.5, -0.5, 0.5, 1.5, 0.5}
 	},
-  collision_box = {
-		 type = "fixed",
-     fixed = {-0.5, -0.5, -0.5, 0.5, 1.5, 0.5}
-	},
-
 	expand = { top="placeholder" }, 
 	sounds = default.node_sound_glass_defaults(),
 	on_rotate = screwdriver.rotate_simple,
@@ -343,149 +362,10 @@ minetest.register_node("beverage:vending", {
 
 	
 	
------ Checks for external content, and adds support
------ Taken from Food mod by Rubenwardy
-
-function beverage.support(group, item)
-	if type(group) == "table" then
-		for i = 1, #group do
-			beverage.support(group[i], item)
-		end
-		return
-	end
-	if type(item) == "table" then
-		for i = 1, #item do
-			beverage.support(group, item[i])
-		end
-		return
-	end
-
-	local idx = string.find(item, ":")
-	if idx <= 1 then
-		error("[Beverage Error] beverage.support - error in item name ('" .. item .. "')")
-	end
-	local mod = string.sub(item, 1, idx - 1)
-
-	if not minetest.get_modpath(mod) then
-		if beverage.debug then
-			print("[Beverage Debug] Mod '"..mod.."' is not installed")
-		end
-		return
-	end
-
-	local data = minetest.registered_items[item]
-	if not data then
-		print("[Beverage Warning] Item '"..item.."' not found")
-		return
-	end
 
 
-	-- Add group
-	local g = {}
-	if data.groups then
-		for k, v in pairs(data.groups) do
-			g[k] = v
-		end
-	end
-	g["beverage_"..group] = 1
-	minetest.override_item(item, {groups = g})
-end
-
-
-
-
-beverage.support("apple", {
-	"default:apple",
-	"fruit:apple",
-	"ethereal:golden_apple",
-	"ironapple:apple_iron",
-
-})
-
-
-
-beverage.support("chocolate", {
-	"farming_plus:cocoa_bean",
-	"farming:cocoa_beans",
-	"food:cocoa",
-	"food:chocolate_powder",
-	"mtfoods:chocolate",
-	"farming:chocolate_dark",
-	"foodblock:chocod_block",
-	"food:dark_chocolate",
-	"foodblock:chocod_block_slab",
-	"foodblock:chocom_block",
-	"food:milk_chocolate",
-	"plants:cacao_wild",
-	
-
-})
-
-beverage.support("orange", {
-	"farming_plus:orange_item",
-	"farming_plus:orange",
-	"food:orange",
-	"fruit:orange",
-	"foodblock:orangeblock",
-	"foodblock:orangeblock_slab",
-
-})
-
-beverage.support("milk", {
-	"jkanimals:beverage_milk",
-	"animalmaterials:milk",
-	"kpgmobs:beverage_milk",
-	"my_mobs:milk_glass_cup",
-	"mobs:beverage_milk",
-	"food:milk",
-	"foodblock:milkblock",
-})
-
-beverage.support("flower", {
-	"flowers:rose",
-	"flowers:dandelion_white",
-	"flowers:viola",
-	"flowers:tulip",
-	"plants:aloe_wild",
-	"plants:lavender_wild",
-	"plants:grass_wild",
-	
-	
-	
-})
-
-
-beverage.support("lemon", {
-	"food_sweet:lemon",
-	"farming_plus:lemon_item",
-
-})
-
-beverage.support("coffee", {
-	"farming:coffee_beans",
-	"farming_plus:coffee_beans",
-
-})
-
-beverage.support("coconut", {
-	"foodblock:cocoblock",
-	"foodblock:cocoblock_slab",
-	"farming:cucumber",
-	"moretrees:coconut_milk",
-	"moretrees:raw_coconut",
-	"docfarming:cucumber",
-	"mtfoods:dandelion_milk",
-	"ethereal:coconut_slice",
-
-})
-
-beverage.support("berry", {
-	"farming_plus:strawberry_item",
-	"plantlib:strawberry",
-	"farming_plus:rhubarb_item",
-	"bushes:strawberry",
-
-})
-
+---------------------------
+---------------------------	
+--- Other Files to run -
 			
-dofile(minetest.get_modpath("beverage").."/beverages.lua")
+dofile(minetest.get_modpath("beverage").."/beverages.lua")    -- Register custom beverages
