@@ -333,7 +333,8 @@ minetest.register_node("beverage:vending", {
        wieldname == "mint:shillings" or
        wieldname == "mint:pounds" or
        wieldname == "bitchange:mineninth" or
-       wieldname == "homedecor:coin"
+       wieldname == "homedecor:coin" or
+       wieldname == "group:currency"				
       then
       wielditem:take_item()
 			puncher:set_wielded_item(wielditem)
