@@ -305,6 +305,8 @@ minetest.register_node("beverage:vending", {
   description = S("Vending Machine"),
   drawtype = "mesh",
   mesh = "homedecor_soda_machine.obj",
+  collision_box = {type = "fixed", fixed = {-0.5, -0.5, -0.5, 0.5, 1.5, 0.5}},
+  light_source = 10,
   inventory_image = "beverage_vendinginv.png",
   paramtype = "light",
   paramtype2 = "facedir",
