@@ -4,6 +4,12 @@ This mod adds various drinks to minetest
 
 License = MIT
 
+Related forum link
+https://forum.minetest.net/viewtopic.php?f=11&t=13601&hilit=beverage
+
+![screenshot2](https://user-images.githubusercontent.com/11191763/52168608-17f60c00-273d-11e9-98c7-4a4e56eeb32e.png)
+![screenshot](https://user-images.githubusercontent.com/11191763/52168610-19273900-273d-11e9-951b-229e23d279db.png)
+
 -- Current Beverages
 
 Coffee, Milk, Hot Chocolate
