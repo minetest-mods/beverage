@@ -20,7 +20,7 @@ version = 1.7,
 -- Inllib support for localization
 
 local S
-if minetest.get_modpath("intllib") then
+if core.get_modpath("intllib") then
 	S = intllib.Getter()
 else
 	S = function(s) return s end
@@ -133,7 +133,7 @@ end end
   
   -- Node definition for beverages, cups, glasses, tin
   
-	minetest.register_node("beverage:"..name, {
+	core.register_node("beverage:"..name, {
         
 		description = description,
 		drawtype = "nodebox",
@@ -147,17 +147,17 @@ end end
         stack_max = 20,
 		on_use =  function(itemstack, user, pointed_thing)
 		if def.heat == "hot" then
-						   minetest.sound_play("beverage_hot", {
+						   core.sound_play("beverage_hot", {
 						   pos = pos, gain = 0.7, hear_distance = 5})
 						   else
-						   minetest.sound_play("beverage_cold", {
+						   core.sound_play("beverage_cold", {
 						   pos = pos, gain = 0.7, hear_distance = 5})
 						   
 		end				   
-					if minetest.get_modpath("thirsty") then
+					if core.get_modpath("thirsty") then
 						thirsty.drink(user, 5, 20)
 					else
-						minetest.item_eat(5)
+						core.item_eat(5)
 					end
           
           itemstack:take_item()
@@ -167,7 +167,7 @@ end end
 
 		after_place_node = function(pos, placer, itemstack)
 			if placer:is_player() then
-			minetest.set_node(pos, {name="beverage:"..name, param2=1})
+			core.set_node(pos, {name="beverage:"..name, param2=1})
 			end
 		end,
 
@@ -181,7 +181,7 @@ end end
 
 if def.heat == "cold" then 
 
-  	minetest.register_node("beverage:"..name.."_tin", {
+  	core.register_node("beverage:"..name.."_tin", {
 		description = description..S(" Tin"),
 		drawtype = "nodebox",
 		use_texture_alpha = true,
@@ -192,13 +192,13 @@ if def.heat == "cold" then
 		groups = {dig_immediate=3,attached_node=1},
 		stack_max = 20,
 		on_use =  function(itemstack, user, pointed_thing)
-				minetest.sound_play("beverage_cold", {
+				core.sound_play("beverage_cold", {
 				pos = pos, gain = 0.7, hear_distance = 5})
 						   
-			   	if minetest.get_modpath("thirsty") then
+			   	if core.get_modpath("thirsty") then
 						thirsty.drink(user, 5, 20)
 					else
-						minetest.item_eat(5)
+						core.item_eat(5)
 					end
           
           itemstack:take_item()
@@ -225,7 +225,7 @@ if def.heat == "cold" then
 	
 -- Crafting for cold beverages ( You can cook hot beverages with Kettle )
 	
-	minetest.register_craft({
+	core.register_craft({
 	output = 'beverage:'..name,
 	recipe = {
 		{'', recipe, ''},
@@ -241,15 +241,15 @@ end
 
 if def.heat == "hot" then 
 	
-minetest.register_abm({
+core.register_abm({
 		nodenames = {
 				"beverage:"..name
 				},
 	interval = 3,
 	chance = 1,
 	action = function(pos, node)
-		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air"
-		then minetest.add_particlespawner({
+		if core.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air"
+		then core.add_particlespawner({
 			amount = 6,
 			time = 1,
 			minpos = {x=pos.x-0.0, y=pos.y-0.2, z=pos.z-0.0},
@@ -274,7 +274,7 @@ minetest.register_abm({
 
   --- Crafting for hot beverages
   
-  minetest.register_craft({
+  core.register_craft({
 	output = 'beverage:'..name,
 	recipe = {
 	{'vessels:glass_fragments', recipe, 'vessels:glass_fragments'},
@@ -301,7 +301,7 @@ local beveragetin =  {"beverage:applejuice_tin",
                       "beverage:lemonade_tin"
 								}
 
-minetest.register_node("beverage:vending", {
+core.register_node("beverage:vending", {
   description = S("Vending Machine"),
   drawtype = "mesh",
   mesh = "homedecor_soda_machine.obj",
@@ -342,19 +342,19 @@ minetest.register_node("beverage:vending", {
 			puncher:set_wielded_item(wielditem)
       local beveragetins = beveragetin
       local RndChoice = beveragetins[math.random( #beveragetins )]
-			minetest.spawn_item(pos_drop, RndChoice)
-			minetest.sound_play("insert_coin", {
+			core.spawn_item(pos_drop, RndChoice)
+			core.sound_play("insert_coin", {
 				pos=pos, max_hear_distance = 5
 			})
 		else
-			minetest.chat_send_player(puncher:get_player_name(), S("Please insert a coin in the machine."))
+			core.chat_send_player(puncher:get_player_name(), S("Please insert a coin in the machine."))
 		end
 	end
 })
 
 		-- Crafting
 	
-	minetest.register_craft({
+	core.register_craft({
 	output = 'beverage:vending',
 	recipe = {
 		{'', 'default:iron_lump', ''},
@@ -371,4 +371,4 @@ minetest.register_node("beverage:vending", {
 ---------------------------	
 --- Other Files to run -
 			
-dofile(minetest.get_modpath("beverage").."/beverages.lua")    -- Register custom beverages
+dofile(core.get_modpath("beverage").."/beverages.lua")    -- Register custom beverages
