@@ -1,52 +1,47 @@
-Beverage Mod
+# Beverage  
+[Luanti forum post](https://forum.luanti.org/viewtopic.php?t=13601)
 
-This mod adds various drinks to minetest
-
-License = MIT
-
-Related forum link
-https://forum.minetest.net/viewtopic.php?f=11&t=13601&hilit=beverage
+This mod adds various drinks to Luanti/Minetest
 
 ![screenshot2](https://user-images.githubusercontent.com/11191763/52168608-17f60c00-273d-11e9-98c7-4a4e56eeb32e.png)
 ![screenshot](https://user-images.githubusercontent.com/11191763/52168610-19273900-273d-11e9-951b-229e23d279db.png)
 
--- Current Beverages
-
+### Beverages
+```
 Coffee, Milk, Hot Chocolate
 Tea, Green Tea , Orange Juice
 Apple Juice, Cherry Juice, Lemonade
 Coconut Milk
+```
 
--- Dependecies
-
-No external depentecies are needed, just the ones comes with default game engine:
+## Dependencies
+From MTG and MTG-based games:
 - Default
 - Vessels ( For crafting recipe )
 
--- Hot drinks have a steam animation effect
-
-
--- Beverages has support for these mods:
+### Optional
+Beverages has support for these mods:  
+```
 farming, farming_plus, mobs, animals_modpack, foodblock
 moretrees, biomelib, mtfoods, foods, ethereal, flowers
 bushes, food_sweet, kpgmobs, fruit, jkanimals, ironapple
+```
 
-
+## API
 You can add your own drinks by using the following template:
+```lua
+register_beverage({
+    name = name of your drink,
+    recipe = "put fruit for drink"
+    liquidcolour = "colour of your liquids RGB code",          
+    description = "description of your drink",           optional
+    wherein = "cup or glasses"                           optional cup by default
+    cuptexture = "cup/glasses texture",                  optional
+    heat = "hot or cold"                                 optional hot by default
+})
+```
 
-    register_beverage({
-                   name = name of your drink,
-                   recipe = "put fruit for drink"
-                   liquidcolour = "colour of your liquids RGB code",          
-                   description = "description of your drink",                 optional
-                   wherein = "cup or glasses"                                 optional cup by default
-                   cuptexture = "cup/glasses texture",                        optional
-                   heat = "hot or cold"                                       optional hot by default
-                  })
-
-Changelog
-
-
+## Changelog
 
     1.7
 	Cleaned code
