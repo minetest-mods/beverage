@@ -21,7 +21,7 @@ register_beverage({
 --------------Internationalization-------
 -----------------------------------------    
 
-local S if minetest.get_modpath("intllib") 
+local S if core.get_modpath("intllib") 
 then S = intllib.Getter() 
 else S = function(s) return s end end 	     
 
@@ -52,14 +52,14 @@ function beverage.support(group, item)
 	end
 	local mod = string.sub(item, 1, idx - 1)
 
-	if not minetest.get_modpath(mod) then
+	if not core.get_modpath(mod) then
 		if beverage.debug then
 			print("[Beverage Debug] Mod '"..mod.."' is not installed")
 		end
 		return
 	end
 
-	local data = minetest.registered_items[item]
+	local data = core.registered_items[item]
 	if not data then
 		print("[Beverage Warning] Item '"..item.."' not found")
 		return
@@ -74,7 +74,7 @@ function beverage.support(group, item)
 		end
 	end
 	g["beverage_"..group] = 1
-	minetest.override_item(item, {groups = g})
+	core.override_item(item, {groups = g})
 end
 
 
